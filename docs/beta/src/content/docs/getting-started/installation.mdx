@@ -2,7 +2,7 @@
 title: Installation
 ---
 
-import { Tabs, TabItem } from "@astrojs/starlight/components";
+import { Tabs, TabItem, Steps } from "@astrojs/starlight/components";
 
 :::caution
 **You are currently viewing the docs for `cva@beta`**
@@ -31,6 +31,13 @@ For stable documentation, please visit [cva.style](https://cva.style).
     ```
 
   </TabItem>
+  <TabItem label="bun">
+
+    ```sh
+    bun add cva@beta
+    ```
+
+  </TabItem>
 </Tabs>
 
 ## Tailwind CSS
@@ -43,75 +50,104 @@ You can enable autocompletion inside `cva` using the steps below:
 
 <Tabs>
   <TabItem label="Visual Studio Code">
+    <Steps>
 
     1. [Install the "Tailwind CSS IntelliSense" Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 
-    2. Add the following to your [`settings.json`](https://code.visualstudio.com/docs/getstarted/settings):
+    2. Add the following to your [`.vscode/settings.json`](https://code.visualstudio.com/docs/getstarted/settings):
+
+        ```json
+        // .vscode/settings.json
+        {
+          "tailwindCSS.experimental.classRegex": [
+            ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]?([^\"'`]+)[\"'`]?"],
+            ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+          ]
+        }
+        ```
+
+    </Steps>
+
+  </TabItem>
+  <TabItem label="Zed">
+
+    Add the following to your [`.zed/settings.json`](https://zed.dev/docs/configuring-zed#settings-files):
 
     ```json
+    // .zed/settings.json
     {
-      "tailwindCSS.experimental.classRegex": [
-        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-        ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
-      ]
+      "lsp": {
+        "tailwindcss-language-server": {
+          "settings": {
+            "experimental": {
+              "classRegex": [
+                ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]?([^\"'`]+)[\"'`]?"],
+                ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+              ]
+            }
+          }
+        }
+      }
     }
     ```
 
   </TabItem>
   <TabItem label="Neovim">
-
+    <Steps>
     1. [Install the extension](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#tailwindcss)
 
     2. Add the following configuration:
 
-    ```lua
-    require 'lspconfig'.tailwindcss.setup({
-      settings = {
-        tailwindCSS = {
-          experimental = {
-            classRegex = {
-              { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-              { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+        ```lua
+        require 'lspconfig'.tailwindcss.setup({
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  { "cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+                  { "cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+                },
+              },
             },
           },
-        },
-      },
-    })
-    ```
+        })
+        ```
+    </Steps>
 
   </TabItem>
   <TabItem label="WebStorm">
-
+    <Steps>
     1. Check the version. Available for [WebStorm 2023.1](https://www.jetbrains.com/webstorm/whatsnew/#version-2023-1-tailwind-css-configuration) and later
 
     2. Open the settings. Go to [Languages and Frameworks | Style Sheets | Tailwind CSS](https://www.jetbrains.com/help/webstorm/tailwind-css.html#ws_css_tailwind_configuration)
 
     3. Add the following to your tailwind configuration
 
-    ```json
-    {
-      "experimental": {
-        "classRegex": ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-      }
-    }
-    ```
+        ```json
+        {
+          "experimental": {
+            "classRegex": [
+              ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]?([^\"'`]+)[\"'`]?"],
+              ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+            ]
+          }
+        }
+        ```
+    </Steps>
 
   </TabItem>
 </Tabs>
 
 ### Handling Style Conflicts
 
-Although `cva`'s API is designed to help you avoid styling conflicts, there's still a small margin of error.
-
-If you're keen to lift that burden altogether, check out the wonderful [`tailwind-merge`](https://github.com/dcastil/tailwind-merge) package.
-
-For bulletproof components, extend `cva` with `twMerge`.
+If you want to merge Tailwind CSS classes without conflicts, you may wish to [roll-your-own `cva`](../api-reference#defineconfig) with the [`tailwind-merge`](https://github.com/dcastil/tailwind-merge) package:
 
 <details>
 
 <summary>Example with tailwind-merge</summary>
 
-```ts filename="cva.config.ts"
+```ts
+// cva.config.ts
 import { defineConfig } from "cva";
 import { twMerge } from "tailwind-merge";
 
@@ -122,7 +158,8 @@ export const { cva, cx, compose } = defineConfig({
 });
 ```
 
-```ts filename="components/button.ts"
+```ts
+// components/button.ts
 import { cx, cva } from "../cva.config";
 
 export const button = cva({

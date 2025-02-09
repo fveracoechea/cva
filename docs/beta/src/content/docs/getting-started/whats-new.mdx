@@ -33,21 +33,12 @@ Shout-out to GitHub for transferring `npm` ownership of `cva`!
 
 Base styles are now applied via the named `base` property.
 
-- _Before_
+```diff lang="ts" ins="{ base:" ins=/(?<= )}/
+-  import { cva } from "class-variance-authority";
++  import { cva } from "cva";
 
-  ```ts
-  import { cva } from "class-variance-authority";
-
-  const before = cva("your-base-class");
-  ```
-
-- _After_
-
-  ```ts
-  import { cva } from "cva";
-
-  const after = cva({ base: "your-base-class" });
-  ```
+  const component = cva({ base: "your-base-class" });
+```
 
 ### 3. Goodbye `null`
 
@@ -60,11 +51,3 @@ Instead, we now recommend explicitly [rolling your own `unset` variant](/getting
 `cva` uses generic type parameters to infer variant types, but this was often confused as something that could be customized.
 
 If you attempt to pass a generic type parameter, `cva` will now throw an error.
-
-### 5. Minification
-
-A tiny enhancement, but a nice boost to bundlesize.
-
-:::caution
-Size may differ before stable release
-:::

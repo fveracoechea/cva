@@ -2,7 +2,7 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 # Installation
 
-<Tabs items={["pnpm", "npm", "yarn"]}>
+<Tabs items={["pnpm", "npm", "yarn", "bun"]}>
   <Tab>
 
     ```sh
@@ -24,6 +24,11 @@ import { Tab, Tabs } from "nextra-theme-docs";
     ```
   
   </Tab>
+  <Tab>
+    ```sh
+    bun add class-variance-authority
+    ```
+  </Tab>
 </Tabs>
 
 <details>
@@ -32,7 +37,7 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 Unfortunately, for a little bit longer, yes. Originally, the plan was to publish the package as `cva`, but this name [was taken and marked as a "placeholder"](https://www.npmjs.com/package/cva).
 
-On 2022/02/16, GitHub transferred NPM ownership of `cva` to [Joe Bell](https://joebell.co.uk/twitter). This shorter name will be used from v1 onwards.
+On 2022/02/16, GitHub transferred NPM ownership of `cva` to [Joe Bell](https://joebell.studio). This shorter name will be used from v1 onwards.
 
 In the meantime, you can always alias the package for your convenience…
 
@@ -60,7 +65,7 @@ If you're a Tailwind user, here are some additional (optional) steps to get the 
 
 You can enable autocompletion inside `cva` using the steps below:
 
-<Tabs items={["Visual Studio Code", "Neovim", "WebStorm"]}>
+<Tabs items={["Visual Studio Code", "Zed", "Neovim", "WebStorm"]}>
   <Tab>
 
     1. [Install the "Tailwind CSS IntelliSense" Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
@@ -70,9 +75,31 @@ You can enable autocompletion inside `cva` using the steps below:
     ```json
     {
       "tailwindCSS.experimental.classRegex": [
-        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
-        ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+        ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
       ]
+    }
+    ```
+
+  </Tab>
+  <Tab>
+  
+    Add the following to your [`.zed/settings.json`](https://zed.dev/docs/configuring-zed#settings-files):
+
+    ```json
+    {
+      "lsp": {
+        "tailwindcss-language-server": {
+          "settings": {
+            "experimental": {
+              "classRegex": [
+                ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+                ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+              ]
+            }
+          }
+        }
+      }
     }
     ```
 
@@ -89,8 +116,8 @@ You can enable autocompletion inside `cva` using the steps below:
         tailwindCSS = {
           experimental = {
             classRegex = {
-              { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-              { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+              { "cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+              { "cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
             },
           },
         },
@@ -110,7 +137,10 @@ You can enable autocompletion inside `cva` using the steps below:
     ```json
     {
       "experimental": {
-        "classRegex": ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+        "classRegex": [
+          ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+          ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ]
       }
     }
     ```

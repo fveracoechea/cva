@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/static";
+import vercel from "@astrojs/vercel";
 
 const site = "https://beta.cva.style";
 const googleAnalyticsId = "G-E8Z8HL9WXF";
@@ -18,17 +18,18 @@ const config = {
 export default defineConfig({
   site,
   output: "static",
-  adapter: vercel({ analytics: false }),
+  adapter: vercel(),
   integrations: [
     starlight({
       ...config,
       description: "Class Variance Authority",
+      credits: false,
       logo: { src: "./src/assets/logo.svg", replacesTitle: true },
       social: {
         github: "https://github.com/joe-bell/cva",
-        twitter: "https://joebell.co.uk/twitter",
-        threads: "https://joebell.co.uk/threads",
+        blueSky: "https://joebell.co.uk/bluesky",
       },
+      tagline: "Class Variance Authority",
       sidebar: [
         {
           label: "Introduction",
@@ -41,6 +42,10 @@ export default defineConfig({
             { label: "Installation", link: "/getting-started/installation" },
             { label: "Variants", link: "/getting-started/variants" },
             {
+              label: "Compound Components",
+              link: "/getting-started/compound-components",
+            },
+            {
               label: "Extending Components",
               link: "/getting-started/extending-components",
             },
@@ -48,12 +53,48 @@ export default defineConfig({
               label: "Composing Components",
               link: "/getting-started/composing-components",
             },
+            {
+              label: "Polymorphism",
+              link: "/getting-started/polymorphism",
+            },
             { label: "TypeScript", link: "/getting-started/typescript" },
           ],
         },
         {
-          label: "Examples ↗",
-          link: "https://cva.style/docs/examples/astro",
+          label: "Examples",
+          items: [
+            {
+              label: "11ty",
+              link: "/examples/11ty",
+            },
+            {
+              label: "Astro",
+              link: "/examples/astro",
+            },
+            {
+              label: "BEM",
+              link: "/examples/bem",
+            },
+            {
+              label: "React",
+              items: [
+                { label: "CSS Modules", link: "/examples/react/css-modules" },
+                { label: "Tailwind CSS", link: "/examples/react/tailwindcss" },
+              ],
+            },
+            {
+              label: "Svelte",
+              link: "/examples/svelte",
+            },
+            {
+              label: "Vue",
+              link: "/examples/vue",
+            },
+            {
+              label: "Other Use Cases",
+              link: "/examples/other-use-cases",
+            },
+          ],
         },
         {
           label: "API Reference",
@@ -64,8 +105,15 @@ export default defineConfig({
           link: "/tutorials",
         },
         {
-          label: "FAQs ↗",
-          link: "https://cva.style/docs/faqs",
+          label: "FAQs",
+          link: "/faqs",
+        },
+        {
+          label: "Sponsor ♡",
+          link: "https://polar.sh/cva",
+          attrs: {
+            target: "_blank",
+          },
         },
       ],
       customCss: ["./src/styles/main.css"],

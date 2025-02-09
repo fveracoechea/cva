@@ -1,0 +1,24 @@
+{
+  "name": "example-astro-with-tailwindcss",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "build": "pnpm check && astro check && astro build",
+    "check": "tsc",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "start": "astro dev"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/tailwind": "^5.1.4",
+    "@astrojs/ts-plugin": "^1.10.4",
+    "astro": "^5.1.7",
+    "class-variance-authority": "latest",
+    "tailwindcss": "^3.4.3"
+  },
+  "devDependencies": {
+    "typescript": "5.7.3"
+  }
+}
